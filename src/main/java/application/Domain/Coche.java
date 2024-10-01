@@ -3,40 +3,45 @@ package application.Domain;
 import java.util.Date;
 
 public class Coche extends Vehiculo {
-    public String marca;
-    public String modelo;
-    public Date fecha;
-    public Double precio;
+    public int plazas;
+    public String tipo;
 
-    public Coche(String matricula, String marca, String modelo, Date fecha, Double precio) {
-        super(matricula);
-        this.marca = marca;
-        this.modelo = modelo;
-        this.fecha = fecha;
-        this.precio = precio;
+    public Coche() {
     }
 
-    public String getMarca() {
-        return marca;
+    public Coche(int id, String matricula, String marca, String modelo, Date fechaSalida, Double precio, String carga, int plazas, String tipo) {
+        super(id, matricula, marca, modelo, fechaSalida, precio, carga);
+        this.plazas = plazas;
+        this.tipo = tipo;
     }
 
-    public String getModelo() {
-        return modelo;
+    public int getPlazas() {
+        return plazas;
     }
 
-    public Date getFecha() {
-        return fecha;
+    public String getTipo() {
+        return tipo;
     }
 
-    public void setMarca(String marca) {
-        this.marca = marca;
+    public void setPlazas(int plazas) {
+        this.plazas = plazas;
     }
 
-    public void setModelo(String modelo) {
-        this.modelo = modelo;
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
+    @Override
+    public String toString() {
+        return "Coche{" +
+                "plazas=" + plazas +
+                ", tipo=" + tipo +
+                ", matricula='" + matricula + '\'' +
+                ", marca='" + marca + '\'' +
+                ", modelo='" + modelo + '\'' +
+                ", fechaSalida=" + fechaSalida +
+                ", precio=" + precio +
+                ", carga='" + carga + '\'' +
+                '}';
     }
 }

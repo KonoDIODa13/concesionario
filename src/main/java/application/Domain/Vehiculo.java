@@ -7,19 +7,33 @@ public abstract class Vehiculo {
     public String matricula;
     public String marca;
     public String modelo;
-    public Date fecha;
-    public Double precio;
+    public Date fechaSalida;
+    public Double precio; //€
+    public String carga;
 
-    public Vehiculo(String matricula, String marca, String modelo, Date fecha, Double precio) {
+
+    public Vehiculo() {
+    }
+
+    public Vehiculo(int id, String matricula, String marca, String modelo, Date fechaSalida, Double precio, String carga) {
+        this.id = id;
         this.matricula = matricula;
         this.marca = marca;
         this.modelo = modelo;
-        this.fecha = fecha;
+        this.fechaSalida = fechaSalida;
         this.precio = precio;
+        this.carga = carga;
     }
 
     public String getMatricula() {
         return matricula;
+    }
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getMarca() {
@@ -42,12 +56,20 @@ public abstract class Vehiculo {
         this.modelo = modelo;
     }
 
-    public Date getFecha() {
-        return fecha;
+    public Date getFechaSalida() {
+        return fechaSalida;
     }
 
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
+    public String getCarga() {
+        return carga;
+    }
+
+    public void setFechaSalida(Date fechaSalida) {
+this.fechaSalida = fechaSalida;
+    }
+
+    public void setCarga(String carga) {
+        this.carga = carga;
     }
 
     public Double getPrecio() {

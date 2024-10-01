@@ -25,13 +25,10 @@ public class Main extends Application {
         loader.setLocation(R.getUI("inicio.fxml"));
         loader.setController(controller);
         VBox vbox = loader.load();
-
-        controller.cargarDatos();
-
         Scene scene = new Scene(vbox);
         stage.setScene(scene);
         stage.show();
-        DigestUtils.sha3_256("hola");
+        // DigestUtils.sha3_256("hola");
     }
 
     @Override
