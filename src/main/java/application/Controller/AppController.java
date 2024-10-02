@@ -16,7 +16,6 @@ import java.sql.SQLException;
 public class AppController {
     private final VehiculoDAO vehiculoDao;
     TextField matriculaText, marcaText, modeloText, precioText, cargaText, plazasText, tipoText;
-    DatePicker fechaSalidaDP;
 
     public AppController() {
         vehiculoDao = new VehiculoDAO();
@@ -46,8 +45,10 @@ public class AppController {
         int plazas = Integer.parseInt(plazasText.getText());
         String tipo = tipoText.getText();
         Coche coche = new Coche(matricula, marca, modelo, precio, carga, plazas, tipo);
-        if(vehiculoDao.insertarCoche(coche)){
+        if (vehiculoDao.insertarCoche(coche)) {
             AlertUtils.mostrarError("vehiculo creado");
+        } else {
+            AlertUtils.mostrarError("error al insertar");
         }
 
 
