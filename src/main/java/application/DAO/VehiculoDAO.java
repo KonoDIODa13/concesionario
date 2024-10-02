@@ -21,8 +21,8 @@ public class VehiculoDAO {
         String name = configuration.getProperty("name");
         String username = configuration.getProperty("username");
         String password = configuration.getProperty("password");
-        System.out.println("jdbc:mysql://" + host + ":" + port + "/" + name + "?serverTimezone=UTC"+
-                username+ password);
+        /*System.out.println("jdbc:mysql://" + host + ":" + port + "/" + name + "?serverTimezone=UTC"+
+                username+ password);*/
         Class.forName("com.mysql.cj.jdbc.Driver");
         conexion = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + name + "?serverTimezone=UTC",
                 username, password);
@@ -33,11 +33,12 @@ public class VehiculoDAO {
     }
 
     public void buscarMatricula() throws SQLException {
-        String sql = "SELECT * FROM concesionario.coche where Matricula= '1234ABC'";
+        String sql = "SELECT * FROM coche where matricula =?";
+
         PreparedStatement sentencia = conexion.prepareStatement(sql);
-        //sentencia.setString(1, "1234ABC");
+        sentencia.setString(1, "1234ABC");
         ResultSet resultado = sentencia.executeQuery();
-       // while (resultado.next()) {
+        while (resultado.next()) {
             Coche coche = new Coche();
             coche.setId(resultado.getInt(1));
             coche.setMatricula(resultado.getString(2));
@@ -49,8 +50,7 @@ public class VehiculoDAO {
             coche.setPlazas(resultado.getInt(8));
             coche.setTipo(resultado.getString(9));
             System.out.println(coche);
-
-        //}
+        }
 
        /* return new Coche(
                 resultado.getString(1), resultado.getString(2), resultado.getString(3),
