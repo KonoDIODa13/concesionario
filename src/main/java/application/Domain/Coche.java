@@ -1,5 +1,6 @@
 package application.Domain;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Coche extends Vehiculo {
@@ -9,8 +10,8 @@ public class Coche extends Vehiculo {
     public Coche() {
     }
 
-    public Coche(int id, String matricula, String marca, String modelo, Date fechaSalida, Double precio, String carga, int plazas, String tipo) {
-        super(id, matricula, marca, modelo, fechaSalida, precio, carga);
+    public Coche(String matricula, String marca, String modelo, Double precio, String carga, int plazas, String tipo) {
+        super(matricula, marca, modelo, precio, carga);
         this.plazas = plazas;
         this.tipo = tipo;
     }
@@ -39,7 +40,6 @@ public class Coche extends Vehiculo {
                 ", matricula='" + matricula + '\'' +
                 ", marca='" + marca + '\'' +
                 ", modelo='" + modelo + '\'' +
-                ", fechaSalida=" + fechaSalida +
                 ", precio=" + precio +
                 ", carga='" + carga + '\'' +
                 '}';

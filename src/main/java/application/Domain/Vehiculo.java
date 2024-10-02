@@ -1,5 +1,6 @@
 package application.Domain;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public abstract class Vehiculo {
@@ -7,7 +8,6 @@ public abstract class Vehiculo {
     public String matricula;
     public String marca;
     public String modelo;
-    public Date fechaSalida;
     public Double precio; //€
     public String carga;
 
@@ -15,12 +15,10 @@ public abstract class Vehiculo {
     public Vehiculo() {
     }
 
-    public Vehiculo(int id, String matricula, String marca, String modelo, Date fechaSalida, Double precio, String carga) {
-        this.id = id;
+    public Vehiculo(String matricula, String marca, String modelo, Double precio, String carga) {
         this.matricula = matricula;
         this.marca = marca;
         this.modelo = modelo;
-        this.fechaSalida = fechaSalida;
         this.precio = precio;
         this.carga = carga;
     }
@@ -28,6 +26,7 @@ public abstract class Vehiculo {
     public String getMatricula() {
         return matricula;
     }
+
     public int getId() {
         return id;
     }
@@ -56,16 +55,8 @@ public abstract class Vehiculo {
         this.modelo = modelo;
     }
 
-    public Date getFechaSalida() {
-        return fechaSalida;
-    }
-
     public String getCarga() {
         return carga;
-    }
-
-    public void setFechaSalida(Date fechaSalida) {
-this.fechaSalida = fechaSalida;
     }
 
     public void setCarga(String carga) {

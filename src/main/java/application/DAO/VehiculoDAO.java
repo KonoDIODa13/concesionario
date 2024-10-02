@@ -6,6 +6,7 @@ import application.Utils.R;
 
 import java.io.IOException;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.Locale;
 import java.util.Properties;
 
@@ -21,8 +22,7 @@ public class VehiculoDAO {
         String name = configuration.getProperty("name");
         String username = configuration.getProperty("username");
         String password = configuration.getProperty("password");
-        /*System.out.println("jdbc:mysql://" + host + ":" + port + "/" + name + "?serverTimezone=UTC"+
-                username+ password);*/
+
         Class.forName("com.mysql.cj.jdbc.Driver");
         conexion = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + name + "?serverTimezone=UTC",
                 username, password);
@@ -40,24 +40,40 @@ public class VehiculoDAO {
         ResultSet resultado = sentencia.executeQuery();
         while (resultado.next()) {
             Coche coche = new Coche();
-            coche.setId(resultado.getInt(1));
-            coche.setMatricula(resultado.getString(2));
-            coche.setMarca(resultado.getString(3));
-            coche.setModelo(resultado.getString(4));
-            coche.setFechaSalida(resultado.getDate(5));
-            coche.setPrecio(resultado.getDouble(6));
-            coche.setCarga(resultado.getString(7));
-            coche.setPlazas(resultado.getInt(8));
-            coche.setTipo(resultado.getString(9));
+            coche.setMatricula(resultado.getString(1));
+            coche.setMarca(resultado.getString(2));
+            coche.setModelo(resultado.getString(3));
+            coche.setPrecio(resultado.getDouble(4));
+            coche.setCarga(resultado.getString(5));
+            coche.setPlazas(resultado.getInt(6));
+            coche.setTipo(resultado.getString(7));
             System.out.println(coche);
         }
+    }
 
-       /* return new Coche(
-                resultado.getString(1), resultado.getString(2), resultado.getString(3),
-                resultado.getDate(4), resultado.getDouble(5), resultado.getString(6),
-                resultado.getInt(5), TipoCoche.FAMILIAR);
-                */
+    public boolean insertarCoche(Coche coche) throws SQLException {
+        /*
+            INSERT INTO Coche (Matricula, Marca, Modelo, Precio, Carga, Plazas, Tipo)
+            VALUES ("1234ABC","Nissan","Almera Tino", 1500.00, "300KG", 5,"FAMILIAR");
+         */
+        boolean comprobado = false;
+        String sql = "INSERT INTO Coche (Matricula, Marca, Modelo, Precio, Carga, Plazas, Tipo) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
+        PreparedStatement sentencia = conexion.prepareStatement(sql);
+        sentencia.setString(1, coche.getMatricula());
+        sentencia.setString(2, coche.getMarca());
+        sentencia.setString(3, coche.getModelo());
+        sentencia.setDouble(4, coche.getPrecio());
+        sentencia.setString(5, coche.getCarga());
+        sentencia.setInt(6, coche.getPlazas());
+        sentencia.setString(7, coche.getTipo());
+
+        ResultSet resultado = sentencia.executeQuery();
+
+        if (resultado.next()) {
+            comprobado = true;
+        }
+        return comprobado;
     }
 
 }
