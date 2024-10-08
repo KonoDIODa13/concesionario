@@ -19,13 +19,10 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        AppController controller = new AppController();
-
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(R.getUI("inicio.fxml"));
-        loader.setController(controller);
-        VBox vbox = loader.load();
-        Scene scene = new Scene(vbox);
+
+        Scene scene = new Scene(loader.load());
         stage.setScene(scene);
         stage.show();
         // DigestUtils.sha3_256("hola");

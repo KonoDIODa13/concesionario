@@ -1,56 +1,41 @@
 package application.Controller;
 
-import application.DAO.VehiculoDAO;
-import application.Domain.Coche;
 import application.Utils.AlertUtils;
+import application.Utils.R;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import org.apache.commons.codec.digest.DigestUtils;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.io.IOException;
-import java.sql.Date;
-import java.sql.SQLException;
+import java.net.URL;
+import java.util.Objects;
+
+import static application.Utils.CambioEscenas.cambioEscena;
 
 public class AppController {
-    private final VehiculoDAO vehiculoDao;
-    TextField matriculaText, marcaText, modeloText, precioText, cargaText, plazasText, tipoText;
+    public AnchorPane rootPane;
 
-    public AppController() {
-        vehiculoDao = new VehiculoDAO();
-        try {
-            vehiculoDao.conectar();
-        } catch (SQLException sqle) {
-            AlertUtils.mostrarError("Error al conectar con la base de datos");
-        } catch (ClassNotFoundException cnfe) {
-            AlertUtils.mostrarError("Error al iniciar la aplicación");
-        } catch (IOException ioe) {
-            AlertUtils.mostrarError("Error al cargar la configuración");
+    public void mostrarInsertado(ActionEvent event) {
+        cambioEscena("insertar.fxml", rootPane);
+    }
+
+    public void mostrarListado(ActionEvent event) {
+        cambioEscena("listado.fxml",rootPane);
+    }
+
+    public void salir(ActionEvent event) {
+        int opcion = JOptionPane.showConfirmDialog(null,
+                "¿Está seguro de que desea salir?", "Confirmación", JOptionPane.YES_NO_OPTION);
+        if (opcion == JOptionPane.YES_OPTION) {
+            System.exit(0); // CERRAR APLICACIÓN
         }
     }
 
-    @FXML
-    public void buscarMatricula(ActionEvent event) throws SQLException {
-        vehiculoDao.buscarMatricula();
-    }
 
-    @FXML
-    public void insertarCoche(ActionEvent event) throws SQLException {
-        String matricula = matriculaText.getText();
-        String marca = marcaText.getText();
-        String modelo = modeloText.getText();
-        double precio = Double.parseDouble(precioText.getText());
-        String carga = cargaText.getText();
-        int plazas = Integer.parseInt(plazasText.getText());
-        String tipo = tipoText.getText();
-        Coche coche = new Coche(matricula, marca, modelo, precio, carga, plazas, tipo);
-        if (vehiculoDao.insertarCoche(coche)) {
-            AlertUtils.mostrarError("vehiculo creado");
-        } else {
-            AlertUtils.mostrarError("error al insertar");
-        }
-
-
-    }
 }
