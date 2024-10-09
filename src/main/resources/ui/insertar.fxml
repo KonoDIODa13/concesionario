@@ -10,10 +10,6 @@
 <AnchorPane fx:id="rootPane" prefHeight="507.0" prefWidth="833.0" VBox.vgrow="NEVER" xmlns="http://javafx.com/javafx/22"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller.insertarController">
     <children>
-        <Button layoutX="85.0" layoutY="188.0" mnemonicParsing="false" onAction="#buscarMatricula"
-                text="Buscar matricula"/>
-        <Button layoutX="460.0" layoutY="374.0" mnemonicParsing="false" onAction="#insertarCoche"
-                text="Insertar Coche"/>
         <TextField fx:id="matriculaText" layoutX="432.0" layoutY="57.0"/>
         <TextField fx:id="marcaText" layoutX="432.0" layoutY="98.0"/>
         <TextField fx:id="modeloText" layoutX="432.0" layoutY="138.0"/>

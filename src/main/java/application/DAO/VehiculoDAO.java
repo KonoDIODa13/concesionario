@@ -2,11 +2,13 @@ package application.DAO;
 
 import application.Domain.Coche;
 import application.Domain.TipoCoche;
+import application.Domain.Vehiculo;
 import application.Utils.R;
 
 import java.io.IOException;
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Properties;
 
@@ -74,6 +76,29 @@ public class VehiculoDAO {
             comprobado = true;
         }
         return comprobado;
+    }
+
+    public ArrayList<Vehiculo> getListado() throws SQLException {
+        ArrayList<Vehiculo> vehiculos = new ArrayList<Vehiculo>();
+        String sql = "SELECT * FROM COCHES";
+        PreparedStatement sentencia = conexion.prepareStatement(sql);
+        ResultSet resultado = sentencia.executeQuery();
+
+        while (resultado.next()) {
+            // int id = resultado.getInt(1);
+            String matricula = resultado.getString(2);
+            String marca = resultado.getString(3);
+            String modelo = resultado.getString(4);
+            double precio = resultado.getDouble(5);
+            String carga = resultado.getString(6);
+            int plazas = resultado.getInt(7);
+            String tipo = resultado.getString(8);
+
+            Coche coche = new Coche(matricula, marca, modelo, precio, carga, plazas, tipo);
+
+            vehiculos.add(coche);
+        }
+        return vehiculos;
     }
 
 }
