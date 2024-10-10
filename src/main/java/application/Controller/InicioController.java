@@ -1,33 +1,27 @@
 package application.Controller;
 
-import application.CRUD.VehiculoCRUD;
-import application.DAO.VehiculoDAO;
-import application.Utils.AlertUtils;
 import javafx.event.ActionEvent;
-
-import java.io.IOException;
-
 import javafx.scene.layout.AnchorPane;
 
 import javax.swing.*;
 import java.sql.SQLException;
 
-import static application.Utils.CambioEscenas.cambioEscena;
+import application.Utils.CambioEscenas;
 
-public class AppController extends SuperController{
+public class InicioController extends SuperController {
 
     public AnchorPane rootPane;
 
-    public AppController() {
+    public InicioController() {
 
     }
 
     public void mostrarInsertado(ActionEvent event) {
-        cambioEscena("insertar.fxml", rootPane);
+        CambioEscenas.cambioEscena("insertar.fxml", rootPane);
     }
 
     public void mostrarListado(ActionEvent event) {
-        cambioEscena("listado.fxml", rootPane);
+        CambioEscenas.cambioEscena("listado.fxml", rootPane);
     }
 
     public void salir(ActionEvent event) throws SQLException {

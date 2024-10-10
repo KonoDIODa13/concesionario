@@ -2,20 +2,14 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="rootPane" prefHeight="555.0" prefWidth="837.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller.listadoController">
+<AnchorPane fx:id="rootPane" prefHeight="555.0" prefWidth="837.0" xmlns="http://javafx.com/javafx/22"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller.ListadoController">
     <children>
-        <Label layoutX="398.0" layoutY="29.0" text="Listado " />
-        <TableView layoutX="165.0" layoutY="72.0" prefHeight="411.0" prefWidth="507.0">
-            <columns>
-                <TableColumn prefWidth="75.0" text="C1" />
-                <TableColumn prefWidth="75.0" text="C2" />
-            </columns>
-        </TableView>
-      <Button layoutX="746.0" layoutY="502.0" mnemonicParsing="false" onAction="#atras" text="Atras" />
-        
+        <Label layoutX="398.0" layoutY="29.0" text="Listado"/>
+        <Button layoutX="746.0" layoutY="502.0" mnemonicParsing="false" onAction="#atras" text="Atras"/>
+        <ListView fx:id="lvVehiculos" layoutX="144.0" layoutY="78.0" prefHeight="351.0" prefWidth="551.0"/>
     </children>
 </AnchorPane>

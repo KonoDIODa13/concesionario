@@ -1,6 +1,7 @@
 package application.Controller;
 
 import application.CRUD.VehiculoCRUD;
+import application.Utils.CambioEscenas;
 
 public abstract class SuperController{
     VehiculoCRUD vehiculoCRUD;

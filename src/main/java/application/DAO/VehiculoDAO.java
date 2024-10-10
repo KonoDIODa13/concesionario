@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
 
@@ -34,31 +35,27 @@ public class VehiculoDAO {
         conexion.close();
     }
 
-    public void buscarMatricula() throws SQLException {
-        String sql = "SELECT * FROM coche where matricula =?";
+    /*
+        public void buscarMatricula() throws SQLException {
+            String sql = "SELECT * FROM coche where matricula =?";
 
-        PreparedStatement sentencia = conexion.prepareStatement(sql);
-        sentencia.setString(1, "1234ABC");
-        ResultSet resultado = sentencia.executeQuery();
-        while (resultado.next()) {
-            Coche coche = new Coche();
-            coche.setMatricula(resultado.getString(1));
-            coche.setMarca(resultado.getString(2));
-            coche.setModelo(resultado.getString(3));
-            coche.setPrecio(resultado.getDouble(4));
-            coche.setCarga(resultado.getString(5));
-            coche.setPlazas(resultado.getInt(6));
-            coche.setTipo(resultado.getString(7));
-            System.out.println(coche);
+            PreparedStatement sentencia = conexion.prepareStatement(sql);
+            sentencia.setString(1, "1234ABC");
+            ResultSet resultado = sentencia.executeQuery();
+            while (resultado.next()) {
+                Coche coche = new Coche();
+                coche.setMatricula(resultado.getString(1));
+                coche.setMarca(resultado.getString(2));
+                coche.setModelo(resultado.getString(3));
+                coche.setPrecio(resultado.getDouble(4));
+                coche.setCarga(resultado.getString(5));
+                coche.setPlazas(resultado.getInt(6));
+                coche.setTipo(resultado.getString(7));
+                System.out.println(coche);
+            }
         }
-    }
-
-    public boolean insertarCoche(Coche coche) throws SQLException {
-        /*
-            INSERT INTO Coche (Matricula, Marca, Modelo, Precio, Carga, Plazas, Tipo)
-            VALUES ("1234ABC","Nissan","Almera Tino", 1500.00, "300KG", 5,"FAMILIAR");
-         */
-        boolean comprobado = false;
+    */
+    public int insertarCoche(Coche coche) throws SQLException {
         String sql = "INSERT INTO Coche (Matricula, Marca, Modelo, Precio, Carga, Plazas, Tipo) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         PreparedStatement sentencia = conexion.prepareStatement(sql);
@@ -70,22 +67,18 @@ public class VehiculoDAO {
         sentencia.setInt(6, coche.getPlazas());
         sentencia.setString(7, coche.getTipo());
 
-        ResultSet resultado = sentencia.executeQuery();
-
-        if (resultado.next()) {
-            comprobado = true;
-        }
-        return comprobado;
+        return sentencia.executeUpdate();
     }
 
-    public ArrayList<Vehiculo> getListado() throws SQLException {
-        ArrayList<Vehiculo> vehiculos = new ArrayList<Vehiculo>();
-        String sql = "SELECT * FROM COCHES";
+    public List<Vehiculo> getListado() throws SQLException {
+        List<Vehiculo> vehiculos = new ArrayList<>();
+        String sql = "SELECT * FROM coches";
+
         PreparedStatement sentencia = conexion.prepareStatement(sql);
         ResultSet resultado = sentencia.executeQuery();
-
+        System.out.println(resultado);
         while (resultado.next()) {
-            // int id = resultado.getInt(1);
+             //int id = resultado.getInt(1);
             String matricula = resultado.getString(2);
             String marca = resultado.getString(3);
             String modelo = resultado.getString(4);
@@ -98,6 +91,7 @@ public class VehiculoDAO {
 
             vehiculos.add(coche);
         }
+
         return vehiculos;
     }
 

@@ -9,7 +9,7 @@ CREATE TABLE `coche` (
   `Matricula` varchar(10) DEFAULT NULL,
   `Marca` varchar(20) DEFAULT NULL,
   `Modelo` varchar(20) DEFAULT NULL,
-  `Precio` double(6,2) DEFAULT NULL,
+  `Precio` double(10,2) DEFAULT NULL,
   `Carga` varchar(20) DEFAULT NULL,
   `Plazas` int DEFAULT NULL,
   `Tipo` varchar(20) DEFAULT NULL

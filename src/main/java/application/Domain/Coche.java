@@ -1,14 +1,8 @@
 package application.Domain;
 
-import java.time.LocalDate;
-import java.util.Date;
-
 public class Coche extends Vehiculo {
     public int plazas;
     public String tipo;
-
-    public Coche() {
-    }
 
     public Coche(String matricula, String marca, String modelo, Double precio, String carga, int plazas, String tipo) {
         super(matricula, marca, modelo, precio, carga);
@@ -22,14 +16,6 @@ public class Coche extends Vehiculo {
 
     public String getTipo() {
         return tipo;
-    }
-
-    public void setPlazas(int plazas) {
-        this.plazas = plazas;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
     }
 
     @Override
