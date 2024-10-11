@@ -20,13 +20,15 @@ public class ListadoController extends SuperController implements Initializable 
 
     public AnchorPane rootPane;
     @FXML
-    public ListView<Vehiculo> lvVehiculos;
+    public ListView<?> lvVehiculos;
+
+    List vehiculos = null;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         lvVehiculos.getItems().clear();
         try {
-            List<Vehiculo> vehiculos = vehiculoCRUD.getVehiculos();
+            vehiculos = vehiculoCRUD.getVehiculos();
             lvVehiculos.setItems(FXCollections.observableList(vehiculos));
         } catch (SQLException e) {
             AlertUtils.mostrarError("error al cargar la lista");

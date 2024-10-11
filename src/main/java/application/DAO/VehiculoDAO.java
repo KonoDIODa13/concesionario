@@ -72,7 +72,7 @@ public class VehiculoDAO {
 
     public List<Vehiculo> getListado() throws SQLException {
         List<Vehiculo> vehiculos = new ArrayList<>();
-        String sql = "SELECT * FROM coches";
+        String sql = "SELECT * FROM coche";
 
         PreparedStatement sentencia = conexion.prepareStatement(sql);
         ResultSet resultado = sentencia.executeQuery();

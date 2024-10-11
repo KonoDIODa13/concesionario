@@ -9,4 +9,8 @@ public class Moto extends Vehiculo {
         this.plazas = plazas;
         this.tipo = tipo;
     }
+    @Override
+    public String toString() {
+        return "Moto: Matricula = " + matricula;
+    }
 }

@@ -1,6 +1,7 @@
 package application.Controller;
 
 import application.Domain.TipoCoche;
+import application.Domain.TipoMoto;
 import application.Utils.AlertUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,23 +17,47 @@ import java.util.ResourceBundle;
 
 import application.Utils.CambioEscenas;
 
-public class InsertarController extends SuperController implements Initializable {
+public class InsertarController extends SuperController {
 
     public AnchorPane rootPane;
+
+    @FXML
+    public RadioButton rbCoche, rbMoto;
+
+    @FXML
+    public ToggleGroup tgTipo;
+
     @FXML
     TextField tfMatricula, tfMarca, tfModelo, tfPrecio, tfCarga, tfPlazas;
 
     @FXML
-    private ComboBox<TipoCoche> cbTipo;
+    private ComboBox<TipoCoche> cbTipoCoche;
+    @FXML
+    private ComboBox<TipoMoto> cbTipoMoto;
 
-    int tCoche = 0;
+    int tipoVehiculo = 0;
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        cbTipo.getItems().add(TipoCoche.DEPORTIVO);
-        cbTipo.getItems().add(TipoCoche.FAMILIAR);
-        cbTipo.getItems().add(TipoCoche.LIMUSINA);
-        cbTipo.getItems().add(TipoCoche.TODOTERRENO);
+    public void mostrarCB(ActionEvent event) {
+        String tipos = tgTipo.getSelectedToggle().getUserData().toString();
+        switch (tipos) {
+            case "coche":
+                cbTipoCoche.getItems().add(TipoCoche.DEPORTIVO);
+                cbTipoCoche.getItems().add(TipoCoche.FAMILIAR);
+                cbTipoCoche.getItems().add(TipoCoche.LIMUSINA);
+                cbTipoCoche.getItems().add(TipoCoche.TODOTERRENO);
+                cbTipoCoche.setVisible(true);
+                cbTipoMoto.setVisible(false);
+                tipoVehiculo = 1;
+                break;
+
+            case "moto":
+                cbTipoMoto.getItems().add(TipoMoto.DEPORTIVA);
+                cbTipoMoto.getItems().add(TipoMoto.MONTANNA);
+                cbTipoMoto.setVisible(true);
+                cbTipoCoche.setVisible(false);
+                tipoVehiculo = 2;
+                break;
+        }
     }
 
     @FXML
@@ -44,10 +69,14 @@ public class InsertarController extends SuperController implements Initializable
         insertarCampo(campos, tfPrecio.getText());
         insertarCampo(campos, tfCarga.getText());
         insertarCampo(campos, tfPlazas.getText());
-        insertarCampo(campos, cbTipo.getValue().toString());
+        if (tipoVehiculo == 1)
+            insertarCampo(campos, cbTipoCoche.getValue().toString());
+        else
+            insertarCampo(campos, cbTipoMoto.getValue().toString());
 
         if (vehiculoCRUD.insertarCoche(campos)) {
             AlertUtils.mostrarConfirmacion("vehiculo creado");
+            CambioEscenas.cambioEscena("listado.fxml", rootPane);
         } else {
             AlertUtils.mostrarError("error al insertar");
         }
