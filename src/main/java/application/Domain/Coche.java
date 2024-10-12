@@ -20,6 +20,6 @@ public class Coche extends Vehiculo {
 
     @Override
     public String toString() {
-        return "Coche: Matricula = " + matricula;
+        return "Coche: Matricula = " + matricula + " Marca = " + marca + " Modelo= " + modelo;
     }
 }

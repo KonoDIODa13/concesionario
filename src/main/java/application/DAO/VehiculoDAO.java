@@ -53,76 +53,95 @@ public class VehiculoDAO {
             }
         }
     */
-    public int insertarCoche(Coche coche) throws SQLException {
-        String sql = "INSERT INTO Coche (Matricula, Marca, Modelo, Precio, Carga, Plazas, Tipo) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    public boolean insertarCoche(Coche coche) throws SQLException {
+        String insertVehiculo = "INSERT INTO Vehiculo (Matricula, Marca, Modelo, Precio, Carga, Tipo) VALUES (?, ?, ?, ?, ?, ?)";
+        PreparedStatement sentenciaVehiculo = conexion.prepareStatement(insertVehiculo);
+        sentenciaVehiculo.setString(1, coche.getMatricula());
+        sentenciaVehiculo.setString(2, coche.getMarca());
+        sentenciaVehiculo.setString(3, coche.getModelo());
+        sentenciaVehiculo.setDouble(4, coche.getPrecio());
+        sentenciaVehiculo.setString(5, coche.getCarga());
+        sentenciaVehiculo.setString(6, "coche");
+        if (sentenciaVehiculo.executeUpdate() > 0) {
 
-        PreparedStatement sentencia = conexion.prepareStatement(sql);
-        sentencia.setString(1, coche.getMatricula());
-        sentencia.setString(2, coche.getMarca());
-        sentencia.setString(3, coche.getModelo());
-        sentencia.setDouble(4, coche.getPrecio());
-        sentencia.setString(5, coche.getCarga());
-        sentencia.setInt(6, coche.getPlazas());
-        sentencia.setString(7, coche.getTipo());
+            int idvehiculo = getId(coche.getMatricula());
+            System.out.println(idvehiculo);
+            String insertCoche = "INSERT INTO Coche (IdVehiculo, Plazas, Tipo) VALUES (?,?,?)";
+            PreparedStatement sentenciaCoche = conexion.prepareStatement(insertCoche);
+            sentenciaCoche.setInt(1, idvehiculo);
+            sentenciaCoche.setInt(2, coche.getPlazas());
+            sentenciaCoche.setString(3, coche.getTipo());
 
-        return sentencia.executeUpdate();
+            return sentenciaCoche.executeUpdate() > 0;
+        }
+        return false;
     }
 
-    public int insertarMoto(Moto moto) throws SQLException {
-        String sql = "INSERT INTO Moto (Matricula, Marca, Modelo, Precio, Carga, Plazas, Tipo) VALUES (?, ?, ?, ?, ?, ?, ?)";
-
+    public int getId(String matricula) throws SQLException {
+        int id = -1;
+        String sql = "SELECT Id FROM Vehiculo WHERE Matricula= ?";
         PreparedStatement sentencia = conexion.prepareStatement(sql);
-        sentencia.setString(1, moto.getMatricula());
-        sentencia.setString(2, moto.getMarca());
-        sentencia.setString(3, moto.getModelo());
-        sentencia.setDouble(4, moto.getPrecio());
-        sentencia.setString(5, moto.getCarga());
-        sentencia.setInt(6, moto.getPlazas());
-        sentencia.setString(7, moto.getTipo());
+        sentencia.setString(1, matricula);
+        ResultSet resultado = sentencia.executeQuery();
+        while (resultado.next()) {
+            id = resultado.getInt(1);
+        }
+        return id;
+    }
 
-        return sentencia.executeUpdate();
+    public boolean insertarMoto(Moto moto) throws SQLException {
+        String insertVehiculo = "INSERT INTO Vehiculo (Matricula, Marca, Modelo, Precio, Carga, tipo) VALUES (?, ?, ?, ?, ?, ?)";
+        PreparedStatement sentenciaVehiculo = conexion.prepareStatement(insertVehiculo);
+        sentenciaVehiculo.setString(1, moto.getMatricula());
+        sentenciaVehiculo.setString(2, moto.getMarca());
+        sentenciaVehiculo.setString(3, moto.getModelo());
+        sentenciaVehiculo.setDouble(4, moto.getPrecio());
+        sentenciaVehiculo.setString(5, moto.getCarga());
+        sentenciaVehiculo.setString(6, "moto");
+        if (sentenciaVehiculo.executeUpdate() > 0) {
+
+            int idvehiculo = getId(moto.getMatricula());
+            System.out.println(idvehiculo);
+            String insertMoto = "INSERT INTO Moto (IdVehiculo, Plazas, Tipo) VALUES (?,?,?)";
+            PreparedStatement sentenciaMoto = conexion.prepareStatement(insertMoto);
+            sentenciaMoto.setInt(1, idvehiculo);
+            sentenciaMoto.setInt(2, moto.getPlazas());
+            sentenciaMoto.setString(3, moto.getTipo());
+
+            return sentenciaMoto.executeUpdate() > 0;
+        }
+        return false;
     }
 
     public List<Vehiculo> getListado() throws SQLException {
         List<Vehiculo> vehiculos = new ArrayList<>();
-        String sql = "SELECT * FROM coche";
-
+        String sql = "SELECT Matricula, Marca, Modelo, Precio, Carga, vehiculo.tipo, Plazas, coche.Tipo " +
+                "FROM vehiculo, coche " +
+                "WHERE vehiculo.Id = coche.IdVehiculo" +
+                " UNION ALL " +
+                "SELECT Matricula, Marca, Modelo, Precio, Carga, vehiculo.tipo, Plazas, moto.Tipo " +
+                "FROM vehiculo, moto " +
+                "WHERE vehiculo.Id = moto.IdVehiculo;";
         PreparedStatement sentencia = conexion.prepareStatement(sql);
         ResultSet resultado = sentencia.executeQuery();
-        System.out.println(resultado);
         while (resultado.next()) {
-            //int id = resultado.getInt(1);
-            String matricula = resultado.getString(2);
-            String marca = resultado.getString(3);
-            String modelo = resultado.getString(4);
-            double precio = resultado.getDouble(5);
-            String carga = resultado.getString(6);
+            String matricula = resultado.getString(1);
+            String marca = resultado.getString(2);
+            String modelo = resultado.getString(3);
+            double precio = resultado.getDouble(4);
+            String carga = resultado.getString(5);
+            String tipoV = resultado.getString(6);
             int plazas = resultado.getInt(7);
             String tipo = resultado.getString(8);
 
-            Coche coche = new Coche(matricula, marca, modelo, precio, carga, plazas, tipo);
+            if (tipoV.equals("coche")) {
+                Coche coche = new Coche(matricula, marca, modelo, precio, carga, plazas, tipo);
+                vehiculos.add(coche);
 
-            vehiculos.add(coche);
-        }
-
-        String sql2 = "SELECT * FROM coche";
-
-        PreparedStatement sentencia2 = conexion.prepareStatement(sql2);
-        ResultSet resultado2 = sentencia2.executeQuery();
-        System.out.println(resultado2);
-        while (resultado2.next()) {
-            //int id = resultado.getInt(1);
-            String matricula = resultado2.getString(2);
-            String marca = resultado2.getString(3);
-            String modelo = resultado2.getString(4);
-            double precio = resultado2.getDouble(5);
-            String carga = resultado2.getString(6);
-            int plazas = resultado2.getInt(7);
-            String tipo = resultado2.getString(8);
-
-            Moto moto = new Moto(matricula, marca, modelo, precio, carga, plazas, tipo);
-
-            vehiculos.add(moto);
+            } else {
+                Moto moto = new Moto(matricula, marca, modelo, precio, carga, plazas, tipo);
+                vehiculos.add(moto);
+            }
         }
 
         return vehiculos;

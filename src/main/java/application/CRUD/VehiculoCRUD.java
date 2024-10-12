@@ -41,8 +41,8 @@ public class VehiculoCRUD {
     }
 
     public boolean insertarVehiculo(List<String> campos) throws SQLException {
-        campos.forEach(String::toString);
         if (!comprobaciones(campos)) return false;
+        List<Vehiculo> vehiculos = getVehiculos();
         String matricula = campos.get(0);
         String marca = campos.get(1);
         String modelo = campos.get(2);
@@ -53,23 +53,32 @@ public class VehiculoCRUD {
         int tipoV = Integer.parseInt(campos.get(7));
         if (tipoV == 1) {
             Coche coche = new Coche(matricula, marca, modelo, precio, carga, plazas, tipo);
-            if (vehiculoDAO.insertarCoche(coche) > 0) {
+            if (vehiculos.contains(coche)) {
+                AlertUtils.mostrarError("El coche: " + matricula + " ya existe en la bd.");
+                return false;
+            }
+            if (vehiculos.stream().anyMatch(vehiculo -> vehiculo.getMatricula().equalsIgnoreCase(matricula))) {
+                AlertUtils.mostrarError("El coche: " + matricula + " ya existe en la bd.");
+                return false;
+            }
+            if (vehiculoDAO.insertarCoche(coche)) {
                 return true;
             }
         } else {
             Moto moto = new Moto(matricula, marca, modelo, precio, carga, plazas, tipo);
-            if (vehiculoDAO.insertarMoto(moto) > 0) {
+            if (vehiculos.contains(moto)) {
+                AlertUtils.mostrarError("la moto: " + matricula + " ya existe en la bd.");
+                return false;
+            }
+            if (vehiculos.stream().anyMatch(vehiculo -> vehiculo.getMatricula().equalsIgnoreCase(matricula))) {
+                AlertUtils.mostrarError("la moto: " + matricula + " ya existe en la bd.");
+                return false;
+            }
+            if (vehiculoDAO.insertarMoto(moto)) {
                 return true;
             }
         }
         return false;
-
-            /*
-        if (vehiculoDAO.insertarVehiculo(coche ) > 0) return true;
-
-        } else Moto moto= new Moto(matricula, marca, modelo, precio, carga, plazas, tipo);
-        if (vehiculoDAO.insertarVehiculo(moto) > 0) return true;
-        return false;*/
     }
 
     public boolean compruebaCampo(String contenido, String campo, String tipo) {

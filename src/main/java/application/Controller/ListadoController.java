@@ -20,9 +20,9 @@ public class ListadoController extends SuperController implements Initializable 
 
     public AnchorPane rootPane;
     @FXML
-    public ListView<?> lvVehiculos;
+    public ListView<Vehiculo> lvVehiculos;
 
-    List vehiculos = null;
+    List<Vehiculo> vehiculos = null;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
