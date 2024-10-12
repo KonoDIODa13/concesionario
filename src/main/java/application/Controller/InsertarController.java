@@ -5,17 +5,17 @@ import application.Domain.TipoMoto;
 import application.Utils.AlertUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 
-import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 
 import application.Utils.CambioEscenas;
+import javafx.scene.text.Text;
+
+import javax.swing.*;
 
 public class InsertarController extends SuperController {
 
@@ -31,6 +31,9 @@ public class InsertarController extends SuperController {
     TextField tfMatricula, tfMarca, tfModelo, tfPrecio, tfCarga, tfPlazas;
 
     @FXML
+    Text tTipo;
+
+    @FXML
     private ComboBox<TipoCoche> cbTipoCoche;
     @FXML
     private ComboBox<TipoMoto> cbTipoMoto;
@@ -39,6 +42,8 @@ public class InsertarController extends SuperController {
 
     public void mostrarCB(ActionEvent event) {
         String tipos = tgTipo.getSelectedToggle().getUserData().toString();
+        cbTipoCoche.getItems().clear();
+        cbTipoMoto.getItems().clear();
         switch (tipos) {
             case "coche":
                 cbTipoCoche.getItems().add(TipoCoche.DEPORTIVO);
@@ -58,10 +63,12 @@ public class InsertarController extends SuperController {
                 tipoVehiculo = 2;
                 break;
         }
+        tTipo.setVisible(true);
     }
 
     @FXML
     public void insertar(ActionEvent event) throws SQLException {
+
         List<String> campos = new ArrayList<>();
         insertarCampo(campos, tfMatricula.getText());
         insertarCampo(campos, tfMarca.getText());
@@ -69,14 +76,17 @@ public class InsertarController extends SuperController {
         insertarCampo(campos, tfPrecio.getText());
         insertarCampo(campos, tfCarga.getText());
         insertarCampo(campos, tfPlazas.getText());
-        if (tipoVehiculo == 1)
-            insertarCampo(campos, cbTipoCoche.getValue().toString());
-        else
-            insertarCampo(campos, cbTipoMoto.getValue().toString());
 
-        if (vehiculoCRUD.insertarCoche(campos)) {
-            AlertUtils.mostrarConfirmacion("vehiculo creado");
-            CambioEscenas.cambioEscena("listado.fxml", rootPane);
+        if (tipoVehiculo == 1) insertarCampo(campos, cbTipoCoche.getValue().toString());
+        else insertarCampo(campos, cbTipoMoto.getValue().toString());
+
+        insertarCampo(campos, String.valueOf(tipoVehiculo));
+
+        if (vehiculoCRUD.insertarVehiculo(campos)) {
+            int opcion = JOptionPane.showConfirmDialog(null, "vehiculo creado.\n?quieres insertar otro vehiculo?");
+
+            if (opcion != JOptionPane.YES_OPTION) CambioEscenas.cambioEscena("listado.fxml", rootPane);
+            else limpiaCampos();
         } else {
             AlertUtils.mostrarError("error al insertar");
         }
@@ -84,6 +94,26 @@ public class InsertarController extends SuperController {
 
     public void insertarCampo(List<String> campos, String campo) {
         campos.add(campo);
+    }
+
+    public void limpiaCampos() {
+        tfMatricula.setText("");
+        tfMarca.setText("");
+        tfModelo.setText("");
+        tfPrecio.setText("");
+        tfCarga.setText("");
+        tfPlazas.setText("");
+        cbTipoCoche.getItems().clear();
+        cbTipoMoto.getItems().clear();
+        tipoVehiculo = 0;
+        tgTipo.selectToggle(null);
+        ocultarTipos();
+    }
+
+    public void ocultarTipos() {
+        tTipo.setVisible(false);
+        cbTipoCoche.setVisible(false);
+        cbTipoMoto.setVisible(false);
     }
 
     public void atras(ActionEvent event) {

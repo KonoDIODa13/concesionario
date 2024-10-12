@@ -12,6 +12,6 @@ public class AlertUtils {
     public static void mostrarConfirmacion(String mensaje){
         Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
         alerta.setContentText(mensaje);
-        alerta.show();
+        alerta.showAndWait();
     }
 }
