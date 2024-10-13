@@ -75,15 +75,35 @@ public class VehiculoCRUD {
         return false;
     }
 
-    public void eliminarVehiculo(Vehiculo vehiculo)  {
+    public void eliminarVehiculo(Vehiculo vehiculo) {
         try {
             if (vehiculoDAO.eliminarVehiculo(vehiculo)) {
                 AlertUtils.mostrarConfirmacion("Vehiculo borrado con exito");
-            }else{
+            } else {
                 AlertUtils.mostrarError("Error al borrar Vehiculo");
             }
         } catch (SQLException e) {
-           AlertUtils.mostrarError("Hubo algun error al eliminar el vehiculo de la base de datos.");
+            AlertUtils.mostrarError("Hubo algun error al eliminar el vehiculo de la base de datos.");
+        }
+    }
+
+    public boolean modificarVehiculo(List<String> campos, Vehiculo preVehiculo) throws SQLException {
+        if (!comprobaciones(campos)) return false;
+        String matricula = campos.get(0);
+        String marca = campos.get(1);
+        String modelo = campos.get(2);
+        double precio = Double.parseDouble(campos.get(3));
+        String carga = campos.get(4);
+        int plazas = Integer.parseInt(campos.get(5));
+        String tipo = campos.get(6);
+        int tipoV = Integer.parseInt(campos.get(7));
+        if (tipoV == 1) {
+            Coche coche = new Coche(matricula, marca, modelo, precio, carga, plazas, tipo);
+            return vehiculoDAO.modificarCoche(coche, preVehiculo);
+
+        } else {
+            Moto moto = new Moto(matricula, marca, modelo, precio, carga, plazas, tipo);
+            return vehiculoDAO.modificarMoto(moto, preVehiculo);
         }
     }
 
@@ -93,9 +113,14 @@ public class VehiculoCRUD {
             AlertUtils.mostrarError("El campo " + campo + " esta vacio");
             bool = false;
         }
-        if (tipo.equals("Double") || tipo.equals("Int")) {
+        if (tipo.equals("Double")) {
+            if (!contenido.matches("\\d+\\.\\d+")) {
+                AlertUtils.mostrarError("El campo " + campo + " no es de tipo: " + tipo);
+                bool = false;
+            }
+        } else if (tipo.equals("Int")) {
             if (!contenido.matches("\\d+")) {
-                AlertUtils.mostrarError("El campo " + campo + "no es de tipo: " + tipo);
+                AlertUtils.mostrarError("El campo " + campo + " no es de tipo: " + tipo);
                 bool = false;
             }
         }

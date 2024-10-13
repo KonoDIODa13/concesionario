@@ -1,13 +1,13 @@
 package application.Domain;
 
 public abstract class Vehiculo {
-    public String matricula;
-    public String marca;
-    public String modelo;
-    public Double precio; //€
-    public String carga;
+    private String matricula;
+    private String marca;
+    private String modelo;
+    private double precio; //€
+    private String carga;
 
-    public Vehiculo(String matricula, String marca, String modelo, Double precio, String carga) {
+    public Vehiculo(String matricula, String marca, String modelo, double precio, String carga) {
         this.matricula = matricula;
         this.marca = marca;
         this.modelo = modelo;
@@ -31,7 +31,7 @@ public abstract class Vehiculo {
         return carga;
     }
 
-    public Double getPrecio() {
+    public double getPrecio() {
         return precio;
     }
 }

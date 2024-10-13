@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="rootPane" prefHeight="480.0" prefWidth="400.0" VBox.vgrow="NEVER" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller.ModificarController">
+    <children>
+        <Label layoutX="144.0" layoutY="14.0" text="MODIFICAR VEHICULO" />
+        <TextField fx:id="tfMatricula" layoutX="172.0" layoutY="52.0" />
+        <TextField fx:id="tfMarca" layoutX="172.0" layoutY="93.0" />
+        <TextField fx:id="tfModelo" layoutX="172.0" layoutY="133.0" />
+        <TextField fx:id="tfPrecio" layoutX="172.0" layoutY="170.0" />
+        <TextField fx:id="tfCarga" layoutX="172.0" layoutY="211.0" />
+        <TextField fx:id="tfPlazas" layoutX="172.0" layoutY="250.0" />
+        <Text layoutX="85.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Matricula:" wrappingWidth="66.97265625" />
+        <Text layoutX="85.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Marca:" wrappingWidth="66.97265625" />
+        <Text layoutX="85.0" layoutY="150.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Modelo:" wrappingWidth="66.97265625" />
+        <Text layoutX="84.0" layoutY="188.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Precio:" wrappingWidth="66.97265625" />
+        <Text layoutX="84.0" layoutY="229.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Carga:" wrappingWidth="66.97265625" />
+        <Text layoutX="84.0" layoutY="268.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Plazas:" wrappingWidth="66.97265625" />
+        <Separator layoutY="293.0" prefWidth="400.0" />
+        <Text layoutX="144.0" layoutY="321.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tipo de vehiculo" wrappingWidth="112.0" />
+        <RadioButton fx:id="rbCoche" layoutX="133.0" layoutY="337.0" mnemonicParsing="false" onAction="#mostrarCB" text="coche" toggleGroup="$tgTipo" userData="coche">
+            <toggleGroup>
+                <ToggleGroup fx:id="tgTipo" />
+            </toggleGroup>
+        </RadioButton>
+        <RadioButton fx:id="rbMoto" layoutX="203.0" layoutY="337.0" mnemonicParsing="false" onAction="#mostrarCB" text="moto" toggleGroup="$tgTipo" userData="moto" />
+        <Text fx:id="tTipo" layoutX="86.0" layoutY="390.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tipo:" wrappingWidth="66.97265625" />
+        <ComboBox fx:id="cbTipoCoche" layoutX="169.0" layoutY="372.0" prefWidth="150.0" promptText="elige una opcion" />
+        <ComboBox fx:id="cbTipoMoto" layoutX="169.0" layoutY="372.0" prefWidth="150.0" promptText="elige una opcion" />
+        <Button layoutX="158.0" layoutY="435.0" mnemonicParsing="false" onAction="#modificar" prefHeight="31.0" prefWidth="95.0" text="modificar" />
+        <Button layoutX="342.0" layoutY="438.0" mnemonicParsing="false" onAction="#atras" text="Atras" />
+    </children>
+</AnchorPane>

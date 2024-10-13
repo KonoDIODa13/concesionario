@@ -51,17 +51,22 @@ public class ListadoController extends SuperController implements Initializable 
             if (opcion == JOptionPane.YES_OPTION) {
                 vehiculoCRUD.eliminarVehiculo(vehiculoSeleccionado);
                 cargarlista();
+                habilitarAcciones(true);
+                vehiculoSeleccionado = null;
             }
         }
     }
 
     public void modificaVehiculo(ActionEvent event) {
+        if (vehiculoSeleccionado != null) {
+            CambioEscenas.cambioEscena("modificar.fxml",rootPane, vehiculoSeleccionado);
+        }
     }
 
     public void getVehiculo(MouseEvent mouseEvent) {
         try {
             vehiculoSeleccionado = lvVehiculos.getSelectionModel().getSelectedItem();
-            //cargarPelicula(peliculaSeleccionada);
+            habilitarAcciones(false);
         } catch (NullPointerException e) {
             AlertUtils.mostrarError("No has seleccionado ningun dato.\n");
         }
@@ -74,5 +79,10 @@ public class ListadoController extends SuperController implements Initializable 
         } catch (SQLException e) {
             AlertUtils.mostrarError("Error al cargar la lista de vehiculos");
         }
+    }
+
+    public void habilitarAcciones(Boolean bool) {
+        btnModificar.setDisable(bool);
+        btnEliminar.setDisable(bool);
     }
 }

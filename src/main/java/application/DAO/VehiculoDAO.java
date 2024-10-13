@@ -33,39 +33,12 @@ public class VehiculoDAO {
         conexion.close();
     }
 
-    /*
-        public void buscarMatricula() throws SQLException {
-            String sql = "SELECT * FROM coche where matricula =?";
-
-            PreparedStatement sentencia = conexion.prepareStatement(sql);
-            sentencia.setString(1, "1234ABC");
-            ResultSet resultado = sentencia.executeQuery();
-            while (resultado.next()) {
-                Coche coche = new Coche();
-                coche.setMatricula(resultado.getString(1));
-                coche.setMarca(resultado.getString(2));
-                coche.setModelo(resultado.getString(3));
-                coche.setPrecio(resultado.getDouble(4));
-                coche.setCarga(resultado.getString(5));
-                coche.setPlazas(resultado.getInt(6));
-                coche.setTipo(resultado.getString(7));
-                System.out.println(coche);
-            }
-        }
-    */
     public boolean insertarCoche(Coche coche) throws SQLException {
-        String insertVehiculo = "INSERT INTO Vehiculo (Matricula, Marca, Modelo, Precio, Carga, Tipo) VALUES (?, ?, ?, ?, ?, ?)";
-        PreparedStatement sentenciaVehiculo = conexion.prepareStatement(insertVehiculo);
-        sentenciaVehiculo.setString(1, coche.getMatricula());
-        sentenciaVehiculo.setString(2, coche.getMarca());
-        sentenciaVehiculo.setString(3, coche.getModelo());
-        sentenciaVehiculo.setDouble(4, coche.getPrecio());
-        sentenciaVehiculo.setString(5, coche.getCarga());
-        sentenciaVehiculo.setString(6, "coche");
-        if (sentenciaVehiculo.executeUpdate() > 0) {
-
+        //primero inserto en la tabla vehiculo.
+        if (insertarVehiculo(coche, "coche")) {
+            //una vez insertado el vehiculo, busco el id del vehiculo para insertarselo a al coche
             int idvehiculo = getId(coche.getMatricula());
-            System.out.println(idvehiculo);
+
             String insertCoche = "INSERT INTO Coche (IdVehiculo, Plazas, Tipo) VALUES (?,?,?)";
             PreparedStatement sentenciaCoche = conexion.prepareStatement(insertCoche);
             sentenciaCoche.setInt(1, idvehiculo);
@@ -75,6 +48,79 @@ public class VehiculoDAO {
             return sentenciaCoche.executeUpdate() > 0;
         }
         return false;
+    }
+
+    public boolean insertarMoto(Moto moto) throws SQLException {
+        //primero inserto en la tabla vehiculo.
+        if (insertarVehiculo(moto, "moto")) {
+            //una vez insertado el vehiculo, busco el id del vehiculo para insertarselo a la moto
+            int idvehiculo = getId(moto.getMatricula());
+
+            String insertMoto = "INSERT INTO Moto (IdVehiculo, Plazas, Tipo) VALUES (?,?,?)";
+            PreparedStatement sentenciaMoto = conexion.prepareStatement(insertMoto);
+            sentenciaMoto.setInt(1, idvehiculo);
+            sentenciaMoto.setInt(2, moto.getPlazas());
+            sentenciaMoto.setString(3, moto.getTipo());
+            return sentenciaMoto.executeUpdate() > 0;
+        }
+        return false;
+    }
+
+    public boolean modificarCoche(Coche coche, Vehiculo preVehiculo) throws SQLException {
+        //primero consigo el id del vehiculo (antes de la modificación) para modificar en las dos tablas.
+        int id = getId(preVehiculo.getMatricula());
+        if (modificarVehiculo(coche, "coche", id)) {
+            //Aqui utilizo el idVehiculo que esta en la tabla de coche para modificarlo
+            String sql = "UDPATE Coche SET Plazas=?,tipo=? WHERE idVehiculo=?";
+            PreparedStatement sentencia = conexion.prepareStatement(sql);
+            sentencia.setInt(1, coche.getPlazas());
+            sentencia.setString(2, coche.getTipo());
+            sentencia.setInt(3, id);
+            return sentencia.executeUpdate() > 0;
+        }
+        return false;
+    }
+
+    public boolean modificarMoto(Moto moto, Vehiculo preVehiculo) throws SQLException {
+        //primero consigo el id del vehiculo (antes de la modificación) para modificar en las dos tablas.
+        int id = getId(preVehiculo.getMatricula());
+        if (modificarVehiculo(moto, "moto", id)) {
+            //Aqui utilizo el idVehiculo que esta en la tabla de moto para modificarlo
+            String sql = "UPDATE Moto SET Plazas=?,tipo=? WHERE idVehiculo=?";
+            PreparedStatement sentencia = conexion.prepareStatement(sql);
+            sentencia.setInt(1, moto.getPlazas());
+            sentencia.setString(2, moto.getTipo());
+            sentencia.setInt(3, id);
+            return sentencia.executeUpdate() > 0;
+        }
+        return false;
+    }
+
+    public boolean modificarVehiculo(Vehiculo vehiculo, String tipoV, int id) throws SQLException {
+        //Aqui utilizo el id del vehiculo
+        String sql = "UPDATE Vehiculo SET Matricula= ?, Marca= ?, Modelo= ? ,Precio= ? ,Carga= ? ,Tipo= ? WHERE id= ?";
+        PreparedStatement sentencia = conexion.prepareStatement(sql);
+        sentencia.setString(1, vehiculo.getMatricula());
+        sentencia.setString(2, vehiculo.getMarca());
+        sentencia.setString(3, vehiculo.getModelo());
+        sentencia.setDouble(4, vehiculo.getPrecio());
+        sentencia.setString(5, vehiculo.getCarga());
+        sentencia.setString(6, tipoV);
+        sentencia.setInt(7, id);
+        return sentencia.executeUpdate() > 0;
+
+    }
+
+    public boolean insertarVehiculo(Vehiculo vehiculo, String tipoV) throws SQLException {
+        String insertVehiculo = "INSERT INTO Vehiculo (Matricula, Marca, Modelo, Precio, Carga, Tipo) VALUES (?, ?, ?, ?, ?, ?)";
+        PreparedStatement sentenciaVehiculo = conexion.prepareStatement(insertVehiculo);
+        sentenciaVehiculo.setString(1, vehiculo.getMatricula());
+        sentenciaVehiculo.setString(2, vehiculo.getMarca());
+        sentenciaVehiculo.setString(3, vehiculo.getModelo());
+        sentenciaVehiculo.setDouble(4, vehiculo.getPrecio());
+        sentenciaVehiculo.setString(5, vehiculo.getCarga());
+        sentenciaVehiculo.setString(6, tipoV);
+        return sentenciaVehiculo.executeUpdate() > 0;
     }
 
     public int getId(String matricula) throws SQLException {
@@ -89,32 +135,10 @@ public class VehiculoDAO {
         return id;
     }
 
-    public boolean insertarMoto(Moto moto) throws SQLException {
-        String insertVehiculo = "INSERT INTO Vehiculo (Matricula, Marca, Modelo, Precio, Carga, tipo) VALUES (?, ?, ?, ?, ?, ?)";
-        PreparedStatement sentenciaVehiculo = conexion.prepareStatement(insertVehiculo);
-        sentenciaVehiculo.setString(1, moto.getMatricula());
-        sentenciaVehiculo.setString(2, moto.getMarca());
-        sentenciaVehiculo.setString(3, moto.getModelo());
-        sentenciaVehiculo.setDouble(4, moto.getPrecio());
-        sentenciaVehiculo.setString(5, moto.getCarga());
-        sentenciaVehiculo.setString(6, "moto");
-        if (sentenciaVehiculo.executeUpdate() > 0) {
-
-            int idvehiculo = getId(moto.getMatricula());
-            System.out.println(idvehiculo);
-            String insertMoto = "INSERT INTO Moto (IdVehiculo, Plazas, Tipo) VALUES (?,?,?)";
-            PreparedStatement sentenciaMoto = conexion.prepareStatement(insertMoto);
-            sentenciaMoto.setInt(1, idvehiculo);
-            sentenciaMoto.setInt(2, moto.getPlazas());
-            sentenciaMoto.setString(3, moto.getTipo());
-
-            return sentenciaMoto.executeUpdate() > 0;
-        }
-        return false;
-    }
 
     public List<Vehiculo> getListado() throws SQLException {
         List<Vehiculo> vehiculos = new ArrayList<>();
+        // la sql que conseguí que seleccionara todos los campos que necesitaba a la hora de mostrar en la lista gracias al union all
         String sql = "SELECT Matricula, Marca, Modelo, Precio, Carga, vehiculo.tipo, Plazas, coche.Tipo " +
                 "FROM vehiculo, coche " +
                 "WHERE vehiculo.Id = coche.IdVehiculo" +
@@ -133,7 +157,7 @@ public class VehiculoDAO {
             String tipoV = resultado.getString(6);
             int plazas = resultado.getInt(7);
             String tipo = resultado.getString(8);
-
+            //lo hago asi para diferenciarlo en la lista.
             if (tipoV.equals("coche")) {
                 Coche coche = new Coche(matricula, marca, modelo, precio, carga, plazas, tipo);
                 vehiculos.add(coche);
@@ -147,6 +171,7 @@ public class VehiculoDAO {
         return vehiculos;
     }
 
+    // Debido a como esta creada la BD, no necesito borrar en la tabla coche o moto, se borra automaticamente.
     public boolean eliminarVehiculo(Vehiculo vehiculo) throws SQLException {
         String sql = "DELETE FROM VEHICULO WHERE Matricula=?";
         PreparedStatement sentencia = conexion.prepareStatement(sql);

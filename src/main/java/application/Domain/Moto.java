@@ -1,10 +1,12 @@
 package application.Domain;
 
-public class Moto extends Vehiculo {
-    public int plazas;
-    public String tipo;
+import javafx.scene.control.SingleSelectionModel;
 
-    public Moto(String matricula, String marca, String modelo, Double precio, String carga, int plazas, String tipo) {
+public class Moto extends Vehiculo {
+    private int plazas;
+    private String tipo;
+
+    public Moto(String matricula, String marca, String modelo, double precio, String carga, int plazas, String tipo) {
         super(matricula, marca, modelo, precio, carga);
         this.plazas = plazas;
         this.tipo = tipo;
@@ -20,6 +22,7 @@ public class Moto extends Vehiculo {
 
     @Override
     public String toString() {
-        return "Moto: Matricula = " + matricula + " Marca = " + marca + " Modelo= " + modelo;
+        return "Moto: Matricula = " + getMatricula() + " Marca = " + getMarca() + " Modelo= " + getModelo();
     }
+
 }
