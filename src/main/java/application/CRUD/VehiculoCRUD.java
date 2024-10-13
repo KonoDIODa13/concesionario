@@ -24,12 +24,6 @@ public class VehiculoCRUD {
         } catch (IOException ioe) {
             AlertUtils.mostrarError("Error al cargar la configuración");
         }
-        /*
-        try {
-            vehiculos = getVehiculos();
-        } catch (SQLException sqle) {
-            AlertUtils.mostrarError("error al cargar la lista de vehiculos");
-        }*/
     }
 
     public List<Vehiculo> getVehiculos() throws SQLException {
@@ -79,6 +73,18 @@ public class VehiculoCRUD {
             }
         }
         return false;
+    }
+
+    public void eliminarVehiculo(Vehiculo vehiculo)  {
+        try {
+            if (vehiculoDAO.eliminarVehiculo(vehiculo)) {
+                AlertUtils.mostrarConfirmacion("Vehiculo borrado con exito");
+            }else{
+                AlertUtils.mostrarError("Error al borrar Vehiculo");
+            }
+        } catch (SQLException e) {
+           AlertUtils.mostrarError("Hubo algun error al eliminar el vehiculo de la base de datos.");
+        }
     }
 
     public boolean compruebaCampo(String contenido, String campo, String tipo) {

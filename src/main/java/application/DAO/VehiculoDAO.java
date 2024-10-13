@@ -147,4 +147,11 @@ public class VehiculoDAO {
         return vehiculos;
     }
 
+    public boolean eliminarVehiculo(Vehiculo vehiculo) throws SQLException {
+        String sql = "DELETE FROM VEHICULO WHERE Matricula=?";
+        PreparedStatement sentencia = conexion.prepareStatement(sql);
+        sentencia.setString(1, vehiculo.getMatricula());
+        return sentencia.executeUpdate() > 0;
+    }
+
 }

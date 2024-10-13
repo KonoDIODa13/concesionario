@@ -5,11 +5,14 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="rootPane" prefHeight="555.0" prefWidth="837.0" xmlns="http://javafx.com/javafx/22"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller.ListadoController">
+<AnchorPane fx:id="rootPane" prefHeight="387.0" prefWidth="616.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller.ListadoController">
     <children>
-        <Label layoutX="398.0" layoutY="29.0" text="Listado"/>
-        <Button layoutX="746.0" layoutY="502.0" mnemonicParsing="false" onAction="#atras" text="Atras"/>
-        <ListView fx:id="lvVehiculos" layoutX="144.0" layoutY="78.0" prefHeight="351.0" prefWidth="551.0"/>
+      <Label layoutX="289.0" layoutY="14.0" text="OPCIONES VEHICULO" />
+        <Label layoutX="193.0" layoutY="55.0" text="Listado" />
+        <Button layoutX="484.0" layoutY="319.0" mnemonicParsing="false" onAction="#atras" text="Atras" />
+        <ListView fx:id="lvVehiculos" layoutX="37.0" layoutY="84.0" onMouseClicked="#getVehiculo" prefHeight="269.0" prefWidth="369.0" />
+      <Button layoutX="456.0" layoutY="84.0" mnemonicParsing="false" onAction="#annadirVehiculo" text="Añadir vehiculo" />
+      <Button fx:id="btnEliminar" layoutX="453.0" layoutY="155.0" mnemonicParsing="false" onAction="#eliminarVehiculo" text="Eliminar vehiculo" />
+      <Button fx:id="btnModificar" layoutX="449.0" layoutY="226.0" mnemonicParsing="false" onAction="#modificaVehiculo" text="Modificar vehiculo" />
     </children>
 </AnchorPane>
