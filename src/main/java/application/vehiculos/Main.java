@@ -20,7 +20,7 @@ public class Main extends Application {
         Scene scene = new Scene(loader.load());
         stage.setScene(scene);
         stage.show();
-        // DigestUtils.sha3_256("hola");
+       // para arrancar la aplicacion mejor utilizar el metodo que no enseñastes del fichero de editar las configuraciones
     }
 
     @Override
