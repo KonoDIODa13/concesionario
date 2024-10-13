@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+// extiende de SuperController
 public class ModificarController extends SuperController {
     @FXML
     private AnchorPane rootPane;
@@ -43,15 +44,20 @@ public class ModificarController extends SuperController {
     private ToggleGroup tgTipo;
 
     int tipoVehiculo = 0;
+    // al igual que al insertar: 1 para insertar coche, 2 para insertar moto.
 
     Vehiculo preVehiculo = null;
+    // el vehiculo que paso al cambiar la escena, lo necesitare para poder modificarlo luego.
 
+    // obtengo el vehiculo y cargo los datos de dicho vehiculo en los campos
     public void setVehiculo(Vehiculo vehiculo) {
         cargarData(vehiculo);
         preVehiculo = vehiculo;
     }
 
+    //metodo que carga dichos datos.
     public void cargarData(Vehiculo vehiculo) {
+        //utilizo el instanceof para comprobar que dicho vehiculo es un coche o una moto.
         if (vehiculo instanceof Coche coche) {
             tfMatricula.setText(coche.getMatricula());
             tfMarca.setText(coche.getMarca());
@@ -61,6 +67,8 @@ public class ModificarController extends SuperController {
             tfPlazas.setText(Integer.toString(coche.getPlazas()));
             tgTipo.selectToggle(rbCoche);
             insertarCamposCB("coche");
+
+            // realizo este for para conseguir el tipo de coche
             TipoCoche motoSeleccionada = null;
             for (TipoCoche tipo : TipoCoche.values()) {
                 if (tipo.toString().equals(coche.getTipo())) {
@@ -78,6 +86,8 @@ public class ModificarController extends SuperController {
             tfPlazas.setText(Integer.toString(moto.getPlazas()));
             tgTipo.selectToggle(rbMoto);
             insertarCamposCB("moto");
+
+            // realizo este for para conseguir el tipo de moto
             TipoMoto motoSeleccionada = null;
             for (TipoMoto tipo : TipoMoto.values()) {
                 if (tipo.toString().equals(moto.getTipo())) {
@@ -89,11 +99,13 @@ public class ModificarController extends SuperController {
         }
     }
 
+    // cambio la escena a la escena de listado sin modifiar nada
     @FXML
     void atras(ActionEvent event) {
         CambioEscenas.cambioEscena("listado.fxml", rootPane);
     }
 
+    // recogo los campos y los inserto en la lista de strings para luego comprobarlos
     @FXML
     void modificar(ActionEvent event) throws SQLException {
         List<String> campos = new ArrayList<>();
@@ -109,7 +121,9 @@ public class ModificarController extends SuperController {
 
         insertarCampo(campos, String.valueOf(tipoVehiculo));
 
-        int opcion = JOptionPane.showConfirmDialog(null, "seguro que quieres modificar el vehiculo cuya matricula era: " + preVehiculo.getMatricula());
+        int opcion = JOptionPane.showConfirmDialog(null,
+                "seguro que quieres modificar el vehiculo cuya matricula era: " + preVehiculo.getMatricula(),
+                "confirmacion", JOptionPane.YES_NO_OPTION);
 
         if (opcion == JOptionPane.YES_OPTION) {
             if (vehiculoCRUD.modificarVehiculo(campos, preVehiculo)) {
@@ -118,6 +132,7 @@ public class ModificarController extends SuperController {
         }
     }
 
+    // al igual que en insertar cuando le pulso a los radio button vuelco el contenido de los enums.
     @FXML
     void mostrarCB(ActionEvent event) {
         String tipos = tgTipo.getSelectedToggle().getUserData().toString();

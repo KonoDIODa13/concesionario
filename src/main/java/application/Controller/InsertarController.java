@@ -17,6 +17,7 @@ import javafx.scene.text.Text;
 
 import javax.swing.*;
 
+// extiende de SuperController
 public class InsertarController extends SuperController {
 
     public AnchorPane rootPane;
@@ -39,7 +40,9 @@ public class InsertarController extends SuperController {
     private ComboBox<TipoMoto> cbTipoMoto;
 
     int tipoVehiculo = 0;
+    // creo esta variable para controlar el tipo de vehiculo que inserto: 1 para coche, 2 para moto.
 
+    // en este metodo segun el radio button seleccionado escribo las opciones del tipo de vehiculo.
     public void mostrarCB(ActionEvent event) {
         String tipos = tgTipo.getSelectedToggle().getUserData().toString();
         cbTipoCoche.getItems().clear();
@@ -68,7 +71,7 @@ public class InsertarController extends SuperController {
 
     @FXML
     public void insertar(ActionEvent event) throws SQLException {
-
+        // los el contenido de los campos los inserto en la  lista de strings que luego pasare al vehiculoCRUD para realizar las comprobaciones.
         List<String> campos = new ArrayList<>();
         insertarCampo(campos, tfMatricula.getText());
         insertarCampo(campos, tfMarca.getText());
@@ -77,13 +80,17 @@ public class InsertarController extends SuperController {
         insertarCampo(campos, tfCarga.getText());
         insertarCampo(campos, tfPlazas.getText());
 
+        // si el tipo es 1 insertaré un coche y cogeré el campo del coche, si no insertaré una moto y cogeré el campo de moto.
         if (tipoVehiculo == 1) insertarCampo(campos, cbTipoCoche.getValue().toString());
         else insertarCampo(campos, cbTipoMoto.getValue().toString());
 
+        // aqui insertaré a la lista el tipo de vehiculo (si es moto o coche).
         insertarCampo(campos, String.valueOf(tipoVehiculo));
 
         if (vehiculoCRUD.insertarVehiculo(campos)) {
-            int opcion = JOptionPane.showConfirmDialog(null, "vehiculo creado.\n?quieres insertar otro vehiculo?");
+
+            // un optionpane para preguntar si quiere insertar mas vehiculos o ir directamente a la ver la lista de vehiculos
+            int opcion = JOptionPane.showConfirmDialog(null, "vehiculo creado.\n?quieres insertar otro vehiculo?", "confirmacion", JOptionPane.YES_NO_OPTION);
 
             if (opcion != JOptionPane.YES_OPTION) CambioEscenas.cambioEscena("listado.fxml", rootPane);
             else limpiaCampos();
@@ -92,10 +99,12 @@ public class InsertarController extends SuperController {
         }
     }
 
+    // funcion para automatizar el añadido a la lista de strings los campos del formulario
     public void insertarCampo(List<String> campos, String campo) {
         campos.add(campo);
     }
 
+    // en caso de quiera seguir insertando vehiculos, se lipiará los campos.
     public void limpiaCampos() {
         tfMatricula.setText("");
         tfMarca.setText("");
@@ -110,12 +119,14 @@ public class InsertarController extends SuperController {
         ocultarTipos();
     }
 
+    // oculta los tipos (combox) para cuando se limpian los campos
     public void ocultarTipos() {
         tTipo.setVisible(false);
         cbTipoCoche.setVisible(false);
         cbTipoMoto.setVisible(false);
     }
 
+    // cambia la escena a la de inicio
     public void atras(ActionEvent event) {
         CambioEscenas.cambioEscena("inicio.fxml", rootPane);
     }

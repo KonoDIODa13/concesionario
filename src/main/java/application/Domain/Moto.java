@@ -1,7 +1,6 @@
 package application.Domain;
 
-import javafx.scene.control.SingleSelectionModel;
-
+//clase moto que extiende de vehiculo
 public class Moto extends Vehiculo {
     private int plazas;
     private String tipo;

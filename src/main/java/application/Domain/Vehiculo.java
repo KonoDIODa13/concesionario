@@ -1,5 +1,6 @@
 package application.Domain;
 
+// clase vehiculo que es abstracta por lo que no se podrá crear objetos de tipo Vehiculo.
 public abstract class Vehiculo {
     private String matricula;
     private String marca;

@@ -19,6 +19,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
 
+// extiende de SuperController
 public class ListadoController extends SuperController implements Initializable {
 
     public AnchorPane rootPane;
@@ -30,20 +31,24 @@ public class ListadoController extends SuperController implements Initializable 
     List<Vehiculo> vehiculos = null;
     Vehiculo vehiculoSeleccionado = null;
 
+    // funcion que se realiza cuando se crea el listadoController. lo utilizo para mostrar la lista de vehiculos.
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         lvVehiculos.getItems().clear();
         cargarlista();
     }
 
+    // cambia la escena a la de inicio.
     public void atras(ActionEvent event) {
         CambioEscenas.cambioEscena("inicio.fxml", rootPane);
     }
 
+    // cambia la escena a añadir.
     public void annadirVehiculo(ActionEvent event) {
         CambioEscenas.cambioEscena("insertar.fxml", rootPane);
     }
 
+    // eliminará el vehiculo siempre y cuando se seleccione un vehiculo.
     public void eliminarVehiculo(ActionEvent event) {
         if (vehiculoSeleccionado != null) {
             int opcion = JOptionPane.showConfirmDialog(null, "Desea Borrar el vehiculo cuya matricula es: " + vehiculoSeleccionado.getMatricula());
@@ -57,12 +62,14 @@ public class ListadoController extends SuperController implements Initializable 
         }
     }
 
+    // cambiara a la escena de modificar (identica a insertar) pasandole el vehiculo seleccionado.
     public void modificaVehiculo(ActionEvent event) {
         if (vehiculoSeleccionado != null) {
             CambioEscenas.cambioEscena("modificar.fxml",rootPane, vehiculoSeleccionado);
         }
     }
 
+    // seleccionará el vehiculo de la lista y habilirtará las acciones de eliminar y modificar.
     public void getVehiculo(MouseEvent mouseEvent) {
         try {
             vehiculoSeleccionado = lvVehiculos.getSelectionModel().getSelectedItem();
@@ -72,6 +79,7 @@ public class ListadoController extends SuperController implements Initializable 
         }
     }
 
+    // metodo para cargar la lista.
     public void cargarlista() {
         try {
             vehiculos = vehiculoCRUD.getVehiculos();
@@ -81,6 +89,7 @@ public class ListadoController extends SuperController implements Initializable 
         }
     }
 
+    // habilita los botones
     public void habilitarAcciones(Boolean bool) {
         btnModificar.setDisable(bool);
         btnEliminar.setDisable(bool);

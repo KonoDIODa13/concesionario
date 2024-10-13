@@ -1,7 +1,7 @@
 package application.Domain;
 
 import javafx.scene.control.SingleSelectionModel;
-
+//calse coche que extiende de vehiculo
 public class Coche extends Vehiculo {
     private int plazas;
     private String tipo;
